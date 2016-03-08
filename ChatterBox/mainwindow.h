@@ -7,6 +7,8 @@
 #include <time.h>
 #include <fstream>
 #include <iomanip>
+#include <QGraphicsScene>
+#include <QFileDialog>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +33,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QPixmap image;
+    QImage  *imageObject;
+    QGraphicsScene *scene;
 };
 
 #endif // MAINWINDOW_H
