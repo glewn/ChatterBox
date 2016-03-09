@@ -44,7 +44,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="profilePic">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -101,7 +101,9 @@
     </property>
     <addaction name="actionListWidget"/>
     <addaction name="separator"/>
-    <addaction name="actionGraphicsView"/>
+    <addaction name="actionProfilePic"/>
+    <addaction name="actionConnection"/>
+    <addaction name="actionConnection_Print"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
@@ -114,9 +116,19 @@
     <string>ListWidget</string>
    </property>
   </action>
-  <action name="actionGraphicsView">
+  <action name="actionProfilePic">
    <property name="text">
     <string>GraphicsView</string>
+   </property>
+  </action>
+  <action name="actionConnection">
+   <property name="text">
+    <string>Connection</string>
+   </property>
+  </action>
+  <action name="actionConnection_Print">
+   <property name="text">
+    <string>Connection Print</string>
    </property>
   </action>
  </widget>
