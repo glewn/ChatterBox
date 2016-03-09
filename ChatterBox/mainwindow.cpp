@@ -1,5 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_profile.h"
+#include "connection.h"
+
+std::string host = "";
+int port = 0;
+std::string nickname = "";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -39,15 +45,19 @@ void MainWindow::on_msgInput_returnPressed()
 
 void MainWindow::on_sendBtn_clicked()
 {
+    // Display message; same functionality as return pressed
     MainWindow::on_msgInput_returnPressed();
 }
 
+// Test function
 void MainWindow::on_actionListWidget_triggered()
 {
+    // Temp to show functionality
     ui->listUsers->addItem("User1\nVancouver, Canada");
 }
 
-void MainWindow::on_actionGraphicsView_triggered()
+// Test function
+void MainWindow::on_actionProfilePic_triggered()
 {
     QString imagePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" ));
     imageObject = new QImage();
@@ -58,6 +68,32 @@ void MainWindow::on_actionGraphicsView_triggered()
     scene = new QGraphicsScene(this);
     scene->addPixmap(image);
     //scene->setSceneRect(image.rect());
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
+    ui->profilePic->setScene(scene);
+    ui->profilePic->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
+}
+
+// Test function
+void MainWindow::on_listUsers_itemDoubleClicked(QListWidgetItem *item)
+{
+    QWidget *wdg = new QWidget;
+    Ui::Profile ui;
+    ui.setupUi(wdg);
+    ui.label->setText(item->text());
+    wdg->show();
+    //ui->msgDisplay->append(item->text());
+}
+
+// Test function
+void MainWindow::on_actionConnection_triggered()
+{
+    QWidget *wdg = new Connection;
+    wdg->show();
+}
+
+// Test function
+void MainWindow::on_actionConnection_Print_triggered()
+{
+    //std::string tmp = MainWindow::host;
+    ui->msgDisplay->append("shit");
+    ui->msgDisplay->append(QString::fromStdString(host));
 }
