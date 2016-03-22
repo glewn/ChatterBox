@@ -19,6 +19,7 @@ extern int port;
 extern std::string nickname;
 extern bool client;
 extern QString imagePath;
+extern bool isPicSet;
 
 class MainWindow : public QMainWindow
 {

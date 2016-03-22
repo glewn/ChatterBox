@@ -8,7 +8,7 @@ Client::Client(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    if(!imagePath.isNull())
+    if(isPicSet)
     {
         imageObject = new QImage();
         imageObject->load(imagePath);
@@ -18,7 +18,7 @@ Client::Client(QWidget *parent) :
         scene = new QGraphicsScene(this);
         scene->addPixmap(image);
         ui->profilePic->setScene(scene);
-        showEvent();
+        showEvent(NULL);
     }
 }
 
@@ -27,16 +27,32 @@ Client::~Client()
     delete ui;
 }
 
-/*
-void Client::resizeEvent(QResizeEvent *)
-{
-    ui->profilePic->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
-}
-*/
+void Client::drawProfilePic() {
+    imageObject = new QImage();
+    imageObject->load(imagePath);
 
-void Client::showEvent()
+    image = QPixmap::fromImage(*imageObject);
+
+    scene = new QGraphicsScene(this);
+    scene->addPixmap(image);
+    ui->profilePic->setScene(scene);
+    showEvent(NULL);
+}
+
+void Client::showEvent(QShowEvent * event)
 {
-    ui->profilePic->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
+    this->QWidget::showEvent(event);
+    if(isPicSet) {
+        ui->profilePic->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
+    }
+}
+
+void Client::resizeEvent(QResizeEvent * event)
+{
+    this->QWidget::resizeEvent(event);
+    if(isPicSet) {
+        ui->profilePic->fitInView(scene->sceneRect(),Qt::KeepAspectRatio);
+    }
 }
 
 void Client::on_msgInput_returnPressed()
