@@ -38,6 +38,8 @@ private slots:
 
     void on_actionProfile_Pic_triggered();
 
+    void on_actionConnect_triggered();
+
 private:
     Ui::MainWindow *ui;
 

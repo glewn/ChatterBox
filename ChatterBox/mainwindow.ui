@@ -59,32 +59,19 @@
     </property>
     <addaction name="actionProfile_Pic"/>
    </widget>
+   <widget class="QMenu" name="menuConnection">
+    <property name="title">
+     <string>Connection</string>
+    </property>
+    <addaction name="actionConnect"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
-   <addaction name="menuHelp"/>
    <addaction name="menuProfile"/>
+   <addaction name="menuConnection"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionListWidget">
-   <property name="text">
-    <string>ListWidget</string>
-   </property>
-  </action>
-  <action name="actionProfilePic">
-   <property name="text">
-    <string>GraphicsView</string>
-   </property>
-  </action>
-  <action name="actionConnection">
-   <property name="text">
-    <string>Connection</string>
-   </property>
-  </action>
-  <action name="actionConnection_Print">
-   <property name="text">
-    <string>Connection Print</string>
-   </property>
-  </action>
   <action name="actionClient">
    <property name="text">
     <string>Client</string>
@@ -95,14 +82,14 @@
     <string>Server</string>
    </property>
   </action>
-  <action name="actionConnect">
-   <property name="text">
-    <string>Connect</string>
-   </property>
-  </action>
   <action name="actionProfile_Pic">
    <property name="text">
     <string>Profile Pic</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
    </property>
   </action>
  </widget>

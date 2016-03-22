@@ -145,7 +145,7 @@ void MainWindow::on_actionProfile_Pic_triggered()
     imagePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" ));
 }
 
-void MainWindow::on_actionConnect_2_triggered()
+void MainWindow::on_actionConnect_triggered()
 {
     conn = new Connection;
     conn->show();
