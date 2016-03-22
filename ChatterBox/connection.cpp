@@ -1,6 +1,7 @@
 #include "connection.h"
 #include "ui_connection.h"
-#include "mainwindow.h"
+#include "mainwindow.h" // ??? maybe ???
+#include "client.h"
 
 Connection::Connection(QWidget *parent) :
     QWidget(parent),

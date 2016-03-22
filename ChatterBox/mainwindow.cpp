@@ -1,17 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ui_profile.h"
-#include "connection.h"
 
 std::string host = "";
 int port = 0;
 std::string nickname = "";
+bool client = true;
+QString imagePath = NULL;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    clnt = new Client;
+    svr = new Server;
+    ui->stackedWidget->addWidget(clnt);
+    ui->stackedWidget->addWidget(svr);
 }
 
 MainWindow::~MainWindow()
@@ -19,6 +23,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::set_status(QString str)
+{
+    ui->statusBar->showMessage(str);
+}
+
+void MainWindow::set_app_title(QString str)
+{
+    setWindowTitle(str);
+}
+
+void MainWindow::set_style()
+{
+    QFile File("style/test.qss");
+    File.open(QFile::ReadOnly);
+    QString StyleSheet = QLatin1String(File.readAll());
+
+    qApp->setStyleSheet(StyleSheet);
+}
+
+/*
 void MainWindow::on_msgInput_returnPressed()
 {
     std::stringstream ss;
@@ -96,4 +120,33 @@ void MainWindow::on_actionConnection_Print_triggered()
     //std::string tmp = MainWindow::host;
     ui->msgDisplay->append("shit");
     ui->msgDisplay->append(QString::fromStdString(host));
+}
+*/
+
+void MainWindow::on_actionClient_triggered()
+{
+    clnt = new Client;
+    setCentralWidget(clnt);
+}
+
+void MainWindow::on_actionServer_triggered()
+{
+    svr = new Server;
+    setCentralWidget(svr);
+    //testing
+    /*
+    set_app_title("whatevs");
+    set_style();
+    */
+}
+
+void MainWindow::on_actionProfile_Pic_triggered()
+{
+    imagePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" ));
+}
+
+void MainWindow::on_actionConnect_2_triggered()
+{
+    conn = new Connection;
+    conn->show();
 }

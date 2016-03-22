@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>400</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,61 +14,17 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="msgInput">
+   <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>525</y>
-      <width>525</width>
-      <height>25</height>
+      <x>50</x>
+      <y>130</y>
+      <width>120</width>
+      <height>80</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QTextBrowser" name="msgDisplay">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>0</y>
-      <width>600</width>
-      <height>525</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listUsers">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>200</y>
-      <width>200</width>
-      <height>350</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="profilePic">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>200</width>
-      <height>200</height>
-     </rect>
-    </property>
-    <property name="cursor" stdset="0">
-     <cursorShape>ArrowCursor</cursorShape>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="sendBtn">
-    <property name="geometry">
-     <rect>
-      <x>725</x>
-      <y>525</y>
-      <width>74</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Send</string>
-    </property>
+    <widget class="QWidget" name="page_3"/>
+    <widget class="QWidget" name="page_4"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -76,7 +32,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>400</width>
      <height>22</height>
     </rect>
    </property>
@@ -89,26 +45,24 @@
     <property name="title">
      <string>Mode</string>
     </property>
+    <addaction name="actionClient"/>
+    <addaction name="actionServer"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuTest">
+   <widget class="QMenu" name="menuProfile">
     <property name="title">
-     <string>Test</string>
+     <string>Profile</string>
     </property>
-    <addaction name="actionListWidget"/>
-    <addaction name="separator"/>
-    <addaction name="actionProfilePic"/>
-    <addaction name="actionConnection"/>
-    <addaction name="actionConnection_Print"/>
+    <addaction name="actionProfile_Pic"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
    <addaction name="menuHelp"/>
-   <addaction name="menuTest"/>
+   <addaction name="menuProfile"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionListWidget">
@@ -129,6 +83,26 @@
   <action name="actionConnection_Print">
    <property name="text">
     <string>Connection Print</string>
+   </property>
+  </action>
+  <action name="actionClient">
+   <property name="text">
+    <string>Client</string>
+   </property>
+  </action>
+  <action name="actionServer">
+   <property name="text">
+    <string>Server</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionProfile_Pic">
+   <property name="text">
+    <string>Profile Pic</string>
    </property>
   </action>
  </widget>
