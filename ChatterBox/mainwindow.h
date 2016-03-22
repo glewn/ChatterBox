@@ -2,14 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <sstream>
-#include <string>
-#include <time.h>
-#include <fstream>
-#include <iomanip>
 #include <QGraphicsScene>
 #include <QFileDialog>
 #include <QListWidgetItem>
+#include <QFile>
+#include "client.h"
+#include "server.h"
+#include "connection.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +17,8 @@ class MainWindow;
 extern std::string host;
 extern int port;
 extern std::string nickname;
+extern bool client;
+extern QString imagePath;
 
 class MainWindow : public QMainWindow
 {
@@ -26,29 +27,24 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void set_status(QString str);
+    void set_app_title(QString str);
+    void set_style();
 
 private slots:
-    void on_msgInput_returnPressed();
+    void on_actionClient_triggered();
 
-    void on_sendBtn_clicked();
+    void on_actionServer_triggered();
 
-    void on_actionListWidget_triggered();
-
-    void on_actionProfilePic_triggered();
-
-    void on_listUsers_itemDoubleClicked(QListWidgetItem *item);
-
-    void on_actionConnection_triggered();
-
-    void on_actionConnection_Print_triggered();
+    void on_actionProfile_Pic_triggered();
 
 private:
     Ui::MainWindow *ui;
 
-    // Profile pic variables
-    QPixmap image;
-    QImage  *imageObject;
-    QGraphicsScene *scene;
+    // Pointer to the widgets
+    Client *clnt;
+    Server *svr;
+    QWidget *conn;
 };
 
 #endif // MAINWINDOW_H

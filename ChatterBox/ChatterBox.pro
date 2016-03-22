@@ -14,11 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    connection.cpp
+    connection.cpp \
+    server.cpp \
+    client.cpp
 
 HEADERS  += mainwindow.h \
-    connection.h
+    connection.h \
+    server.h \
+    client.h
 
 FORMS    += mainwindow.ui \
     profile.ui \
-    connection.ui
+    connection.ui \
+    server.ui \
+    client.ui
