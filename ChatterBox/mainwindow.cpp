@@ -6,6 +6,7 @@ int port = 0;
 std::string nickname = "";
 bool client = true;
 QString imagePath = NULL;
+bool isPicSet = false;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -143,6 +144,8 @@ void MainWindow::on_actionServer_triggered()
 void MainWindow::on_actionProfile_Pic_triggered()
 {
     imagePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" ));
+    isPicSet = true;
+    clnt->drawProfilePic();
 }
 
 void MainWindow::on_actionConnect_triggered()

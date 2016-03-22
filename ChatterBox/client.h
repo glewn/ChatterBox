@@ -21,7 +21,7 @@ class Client : public QWidget
 public:
     explicit Client(QWidget *parent = 0);
     ~Client();
-    //void resizeEvent(QResizeEvent *) override;
+    void drawProfilePic();
 
 protected:
 
@@ -31,7 +31,8 @@ private slots:
     void on_sendBtn_clicked();
 
 private:
-    void showEvent();
+    void showEvent(QShowEvent * event);
+    void resizeEvent(QResizeEvent * event);
     Ui::Client *ui;
 
     QImage  *imageObject;
