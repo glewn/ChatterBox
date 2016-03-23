@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QListWidgetItem>
 #include <QFile>
+#include <QColorDialog>
 #include "client.h"
 #include "server.h"
 #include "connection.h"
@@ -20,6 +21,15 @@ extern std::string nickname;
 extern bool client;
 extern QString imagePath;
 extern bool isPicSet;
+
+struct font {
+    QString color;
+    QString size;
+    bool bold;
+    bool italic;
+    bool underline;
+    QString fontStyle;
+};
 
 class MainWindow : public QMainWindow
 {

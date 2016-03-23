@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QResizeEvent>
+#include <QColorDialog>
 #include <sstream>
 #include <string>
 #include <time.h>
@@ -38,6 +39,11 @@ private:
     QImage  *imageObject;
     QPixmap image;
     QGraphicsScene *scene;
+
+    // Formatted text tags
+    QString fmt;
+
+    QColor color;
 };
 
 #endif // CLIENT_H

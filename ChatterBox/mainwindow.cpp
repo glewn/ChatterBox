@@ -4,19 +4,17 @@
 std::string host = "";
 int port = 0;
 std::string nickname = "";
-bool client = true;
 QString imagePath = NULL;
 bool isPicSet = false;
+
+// UNUSEDDDDDD
+struct font font;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    clnt = new Client;
-    svr = new Server;
-    ui->stackedWidget->addWidget(clnt);
-    ui->stackedWidget->addWidget(svr);
 }
 
 MainWindow::~MainWindow()
@@ -153,3 +151,13 @@ void MainWindow::on_actionConnect_triggered()
     conn = new Connection;
     conn->show();
 }
+/*
+void MainWindow::on_actionColor_Dialog_triggered()
+{
+    QColor color = QColorDialog::getColor(Qt::black, this, "Text Color",  QColorDialog::DontUseNativeDialog);
+    if(color.isValid()) {
+        ui->widget->setPalette(color);
+        ui->widget->show();
+    }
+}
+*/
