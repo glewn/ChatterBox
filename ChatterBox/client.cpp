@@ -20,6 +20,11 @@ Client::Client(QWidget *parent) :
         ui->profilePic->setScene(scene);
         showEvent(NULL);
     }
+
+    color = QColorDialog::getColor(Qt::black, this, "Text Color",  QColorDialog::DontUseNativeDialog);
+    if(color.isValid()) {
+        fmt.append(color.name());
+    }
 }
 
 Client::~Client()
@@ -57,6 +62,8 @@ void Client::resizeEvent(QResizeEvent * event)
 
 void Client::on_msgInput_returnPressed()
 {
+    // Make sure to move this -----------------------------------------------------------------
+    // fmt = "<span style='display:block;color:#863453'>";
     std::stringstream ss;
     time_t rawtime;
     struct tm *timeinfo;
@@ -70,9 +77,9 @@ void Client::on_msgInput_returnPressed()
     ampm = (timeinfo->tm_hour/12 > 1) ? "PM" : "AM";
 
     // Build formatted output
-    ss << timeinfo->tm_hour%12 << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_min
-       << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_sec << ampm
-       << ": " << ui->msgInput->text().toStdString();
+    ss << "[" << timeinfo->tm_hour%12 << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_min
+       << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_sec << ampm << "]"
+       << ": " << "<span style='color:" << fmt.toStdString() << "'>" << ui->msgInput->text().toStdString() << "</span>";
 
     ui->msgDisplay->append(QString::fromStdString(ss.str()));
 

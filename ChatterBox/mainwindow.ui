@@ -13,20 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QStackedWidget" name="stackedWidget">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>130</y>
-      <width>120</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <widget class="QWidget" name="page_3"/>
-    <widget class="QWidget" name="page_4"/>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -65,11 +52,17 @@
     </property>
     <addaction name="actionConnect"/>
    </widget>
+   <widget class="QMenu" name="menuTesting">
+    <property name="title">
+     <string>Testing</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMode"/>
    <addaction name="menuProfile"/>
    <addaction name="menuConnection"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuTesting"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionClient">
