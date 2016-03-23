@@ -7,6 +7,10 @@
 #include <QListWidgetItem>
 #include <QFile>
 #include <QColorDialog>
+#include <QFont>
+#include <QFontDialog>
+#include <sstream>
+#include <string>
 #include "client.h"
 #include "server.h"
 #include "connection.h"
@@ -15,21 +19,19 @@ namespace Ui {
 class MainWindow;
 }
 
+struct font {
+    QString color;
+    QFont style;
+};
+
 extern std::string host;
 extern int port;
 extern std::string nickname;
 extern bool client;
 extern QString imagePath;
 extern bool isPicSet;
+extern struct font usrFont;
 
-struct font {
-    QString color;
-    QString size;
-    bool bold;
-    bool italic;
-    bool underline;
-    QString fontStyle;
-};
 
 class MainWindow : public QMainWindow
 {
@@ -50,6 +52,10 @@ private slots:
     void on_actionProfile_Pic_triggered();
 
     void on_actionConnect_triggered();
+
+    void on_actionFont_Color_triggered();
+
+    void on_actionFont_Style_triggered();
 
 private:
     Ui::MainWindow *ui;
