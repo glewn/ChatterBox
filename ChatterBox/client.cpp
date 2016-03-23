@@ -21,10 +21,12 @@ Client::Client(QWidget *parent) :
         showEvent(NULL);
     }
 
+    /*
     color = QColorDialog::getColor(Qt::black, this, "Text Color",  QColorDialog::DontUseNativeDialog);
     if(color.isValid()) {
         fmt.append(color.name());
     }
+    */
 }
 
 Client::~Client()
@@ -62,8 +64,19 @@ void Client::resizeEvent(QResizeEvent * event)
 
 void Client::on_msgInput_returnPressed()
 {
-    // Make sure to move this -----------------------------------------------------------------
-    // fmt = "<span style='display:block;color:#863453'>";
+    if(!ui->msgInput->text().isEmpty()) {
+        ui->msgDisplay->append(this->build_string(ui->msgInput->text()));
+
+        ui->msgInput->clear();
+    }
+}
+
+void Client::on_sendBtn_clicked()
+{
+    Client::on_msgInput_returnPressed();
+}
+
+QString Client::build_string(QString msg) {
     std::stringstream ss;
     time_t rawtime;
     struct tm *timeinfo;
@@ -76,17 +89,16 @@ void Client::on_msgInput_returnPressed()
     // Determine whether it's AM or PM
     ampm = (timeinfo->tm_hour/12 > 1) ? "PM" : "AM";
 
-    // Build formatted output
+    // Build formatted output for time and name (<- to be implemented)
     ss << "[" << timeinfo->tm_hour%12 << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_min
        << ":" << std::setw(2) << std::setfill('0') << timeinfo->tm_sec << ampm << "]"
-       << ": " << "<span style='color:" << fmt.toStdString() << "'>" << ui->msgInput->text().toStdString() << "</span>";
+       << ((QString::fromStdString(nickname).isEmpty()) ? ("You") : (nickname)) << ": ";
 
-    ui->msgDisplay->append(QString::fromStdString(ss.str()));
+    ss << "<span style='color:" << usrFont.color.toStdString() << ";font-size:" << usrFont.style.pointSize()
+       << "pt;font-weight:" << ((usrFont.style.bold()) ? "bold" : "normal") << ";text-decoration:"
+       << ((usrFont.style.underline()) ? "underline" : "none") << ";font-style:" << ((usrFont.style.italic()) ? "italic" : "normal")
+       << ";font-family:" << usrFont.style.family().toStdString() << "'>" << msg.toStdString() << "</span>";
 
-    ui->msgInput->clear();
+    return QString::fromStdString(ss.str());
 }
 
-void Client::on_sendBtn_clicked()
-{
-    Client::on_msgInput_returnPressed();
-}

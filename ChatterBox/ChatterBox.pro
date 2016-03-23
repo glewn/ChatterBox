@@ -24,7 +24,6 @@ HEADERS  += mainwindow.h \
     client.h
 
 FORMS    += mainwindow.ui \
-    profile.ui \
     connection.ui \
     server.ui \
     client.ui

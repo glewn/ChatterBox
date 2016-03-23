@@ -45,6 +45,8 @@
      <string>Profile</string>
     </property>
     <addaction name="actionProfile_Pic"/>
+    <addaction name="actionFont_Color"/>
+    <addaction name="actionFont_Style"/>
    </widget>
    <widget class="QMenu" name="menuConnection">
     <property name="title">
@@ -83,6 +85,16 @@
   <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionFont_Color">
+   <property name="text">
+    <string>Font Color</string>
+   </property>
+  </action>
+  <action name="actionFont_Style">
+   <property name="text">
+    <string>Font Style</string>
    </property>
   </action>
  </widget>

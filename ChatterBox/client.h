@@ -23,6 +23,7 @@ public:
     explicit Client(QWidget *parent = 0);
     ~Client();
     void drawProfilePic();
+    QString build_string(QString msg);
 
 protected:
 
@@ -34,6 +35,7 @@ private slots:
 private:
     void showEvent(QShowEvent * event);
     void resizeEvent(QResizeEvent * event);
+
     Ui::Client *ui;
 
     QImage  *imageObject;
