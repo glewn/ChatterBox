@@ -14,6 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -23,11 +24,6 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuProfile">
     <property name="title">
      <string>Profile</string>
@@ -44,9 +40,7 @@
    </widget>
    <addaction name="menuProfile"/>
    <addaction name="menuConnection"/>
-   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionProfile_Pic">
    <property name="text">
     <string>Profile Pic</string>
