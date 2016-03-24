@@ -6,6 +6,8 @@ Run
 		"./server <port>"   
 			: port number is optional. Default port is 7000.
     - Client
+	build file using Source : [../Source/Client]
+		make
 	use source file [../Executable]
 		- "./ChatterBox"  : It will open client UI
 		- input IP address, Port number, nickname
