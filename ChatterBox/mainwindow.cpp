@@ -45,7 +45,7 @@ void MainWindow::set_style()
 
 void MainWindow::on_actionClient_triggered()
 {
-    clnt = new Client;
+    clnt = new Client(this);
     setCentralWidget(clnt);
 }
 

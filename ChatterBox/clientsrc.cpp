@@ -3,14 +3,16 @@
 
 int sockNum = -1;
 Client *parentx;
+MainWindow *mw;
 
-clientSrc::clientSrc(QWidget *parent)//std::string ipAddr, int portNum = DEFAULT_PORT)
+clientSrc::clientSrc(QWidget *parent, QWidget *grandparent)//std::string ipAddr, int portNum = DEFAULT_PORT)
 {
     //host = ipAddr.c_str();
     //strcpy(host, ipAddr);
     //port = portNum;
     //sockNum = 0;
     parentx = qobject_cast<Client*>(parent);
+    mw = qobject_cast<MainWindow*>(grandparent);
 }
 
 
@@ -35,16 +37,20 @@ void *readMsg(void *sock){
             bytes_to_read -= n;
 
         }
-
+        qDebug()<<"THE RECEIVE INFO! " << MsgRcv->type << ", " << MsgRcv->name << ", ";
         switch(MsgRcv->type){
-            case MSG_CONN:
-                qDebug("%s enter the chat room\n", MsgRcv->name);
-                break;
+
             case MSG_NAME:
                 qDebug("change name\n");
                 break;
             case MSG_QUIT:
                 qDebug("sb quit");
+                break;
+            case MSG_CONN:
+                qDebug("%s enter the chat room\n", MsgRcv->name);
+                std::stringstream temp;
+                temp << MsgRcv->name <<" is connected";
+                mw->set_status("CONN");
                 break;
             case MSG_MESG:
                 QString s(MsgRcv->msgTxt);
@@ -53,7 +59,7 @@ void *readMsg(void *sock){
                 break;
 
         }
-        //fflush(stdout);
+
 
     }
     return (0);
@@ -92,6 +98,7 @@ void clientSrc::clientStart()
         return;
     }
 
+    mw->set_status("Connected!");
     sendPersonalInfo();
     recvList();
 
@@ -134,7 +141,7 @@ void clientSrc::sendPersonalInfo(){
     myInfo->type = MSG_CONN;
     strcpy(myInfo->name, nickname.c_str());
     strcpy(myInfo->msgTxt, "");
-    send (sockNum, (void *)myInfo, sizeof(MsgStr) , 0);
+    send (sockNum, (void *)myInfo, sizeof(MsgStr) ,0);
 
 }
 

@@ -21,7 +21,7 @@ extern int sockNum;
 class clientSrc
 {
 public:
-    clientSrc(QWidget *parent = 0);//std::string, int);
+    clientSrc(QWidget *parent = 0, QWidget *grandparent = 0);//std::string, int);
     void clientStart();
    // void recvStart();
     void createMsg(MsgStr *mesgForm, int typeNum, const char *message);
