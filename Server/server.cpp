@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include<fstream>
 
 #define DEFAULT_PORT 7000
 #define MSGSIZE 255
@@ -24,6 +25,8 @@
 #define MSG_NAME 10001
 #define MSG_MESG 10002
 #define MSG_QUIT 10003
+using namespace std;
+
 
 typedef struct message{
 	int type;
@@ -47,7 +50,7 @@ void receiveMsg(int, MsgStr*, MsgStr*);
 static void SystemFatal(const char* message)
 {
     perror (message);
-    exit (EXIT_FAILURE);
+//    exit (EXIT_FAILURE);
 }
 void initClientInfo(int i){
 	char temp[NAMESIZE];
@@ -63,7 +66,10 @@ void initClientInfo(int i){
 
 void createMsg(MsgStr* fullMsg, int type, int i, const char *msgText){
 	fullMsg->type = type;
-	strcpy(fullMsg->name, clientList[i].name);
+	if(i < MAXUSER)
+		strcpy(fullMsg->name, clientList[i].name);
+	else
+		strcpy(fullMsg->name, "ERRORMESSAGE");
 	strcpy(fullMsg->msgTxt, msgText);
 	printf("CreateMsg - type: %d, client: %s, txt: %s\n", fullMsg->type, fullMsg->name, fullMsg->msgTxt);
 }
@@ -92,13 +98,19 @@ void *writeMsg(void * messageStr){
 		}
 		write(clientList[i].sockNum, (void *)msge, sizeof(MsgStr));
 		printf("write to client[%d]: %d: %s\n",i, clientList[i].sockNum, clientList[i].name);
+
+		if(msge->type == MSG_QUIT || msge->type == MSG_CONN){
+			sendList(clientList[i].sockNum);
+			printf("send LIST   ");
+		}
 	}
 	printf("Success writeMsg\n");
 	return 0;
 }
 
 void writeOne(int clientIdx, MsgStr *fullMsg){
-		write(clientList[clientIdx].sockNum, (void *)fullMsg, sizeof(MsgStr));
+	//	if
+		write((clientIdx<MAXUSER)?clientList[clientIdx].sockNum:clientIdx, (void *)fullMsg, sizeof(MsgStr));
 }
 
 void write_to_all(MsgStr *fullMsg, int maxi){
@@ -116,7 +128,7 @@ void write_to_all(MsgStr *fullMsg, int maxi){
 void client_display(int maxi){
 	fprintf(stdout, "************* client List *************\n");
 	for(int i = 0; i <= maxi; i++){
-			if(clientList[i].sockNum!=0){
+			if(clientList[i].sockNum > 0){
 				printf("socket number %d - name: %s\n", clientList[i].sockNum, clientList[i].name);
 			}
 	}
@@ -131,7 +143,7 @@ int main(int argc, char **argv){
 	int listen_sd, new_sd, sockfd, port, maxfd ;//client array
 	socklen_t  client_len;
 	struct sockaddr_in client_addr;
-	MsgStr conMsg;
+
 	//char buf[MSGSIZE], *bp;//, *bpname, nameBuf[NAMESIZE];
 
 	fd_set rset, allset;
@@ -155,7 +167,8 @@ int main(int argc, char **argv){
 
 
 	listen_sd = open_socket(port);
-
+	ofstream log("logfile.txt", ios_base::trunc | ios_base::out);
+	log << "socket connected" << endl;
 	bzero(clientList, sizeof(clientList));
 
 
@@ -186,7 +199,7 @@ int main(int argc, char **argv){
 			if ((new_sd = accept(listen_sd, (struct sockaddr *) &client_addr, &client_len)) == -1)
 				SystemFatal("accept error");
 
-			printf(" Remote Address:  %s\n", inet_ntoa(client_addr.sin_addr));
+	//		printf(" Remote Address:  %s\n", inet_ntoa(client_addr.sin_addr));
 
 
 			for (i = 0; i < MAXUSER; i++){
@@ -194,21 +207,26 @@ int main(int argc, char **argv){
 				if (clientList[i].sockNum < 0)
 				{
 					clientList[i].sockNum = new_sd;
-
-					//createMsg(&conMsg, MSG_CONN, i, "new user");
-
 					break;
 				}
+
 			}
-			printf("\nbreak client declare\n");
+//			printf("\nbreak client declare\n");
 			//**** designing scaling server :
 			//dont realize why it is working ***ALWAYS CHECKING
 
 			//tempolarly use MAXUSER
 			if (i == MAXUSER)//FD_SETSIZE)
 			{
-				 SystemFatal("Too many clients\n");
-					exit(1);
+				 MsgStr errMsg;
+				 createMsg(&errMsg, MSG_QUIT,i,"sorry no space");
+				 writeOne(new_sd, &errMsg);
+				 log <<"CHAT ROOM IS FULL." <<endl;
+//				 SystemFatal("Too many clients\n");
+			}
+			else{
+				log << "client [" << inet_ntoa(client_addr.sin_addr)
+				    << "] connected - socket" <<clientList[i].sockNum<<endl;
 			}
 
 			FD_SET (new_sd, &allset);     // add new descriptor to set
@@ -217,10 +235,10 @@ int main(int argc, char **argv){
 
 			if (i > maxi)
 				maxi = i;	// new max index in client[] array
-			printf("check nready :%d\tmaxi: %d\n", nready,maxi);
+//				printf("check nready :%d\tmaxi: %d\n", nready,maxi);
 			if (--nready <= 0)
 				continue;	// no more readable descriptors
-			printf("more nready\n");
+//			printf("more nready\n");
 		}
 
 		for (i = 0; i <= maxi; i++)	// check all clients for data
@@ -232,21 +250,17 @@ int main(int argc, char **argv){
 			if ((sockfd = clientList[i].sockNum) < 0)
 				continue;
 
-		  printf("FD_ISSET to recv \n");
 			if (FD_ISSET(sockfd, &rset))
 			{
 				receiveMsg(i, sendForm, recvForm);
 
-				printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n",
-				 			sendForm->type, sendForm->name, sendForm->msgTxt);
-				printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n",
-							recvForm->type, recvForm->name, recvForm->msgTxt);
-
 
 				switch(recvForm->type){
 					case MSG_CONN:
+
 					case MSG_MESG:
-							printf("echo all\n");
+							log <<"Receive From ["<< recvForm->name <<"]: " << recvForm->msgTxt<<endl;
+							log <<"echo to all client" << endl;
 							if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
 							{
 								perror("thread create error : ");
@@ -255,7 +269,13 @@ int main(int argc, char **argv){
 							break;
 
 					case MSG_QUIT:
-							printf("\t Remote Address:  %s closed connection\n", inet_ntoa(client_addr.sin_addr));
+							log<< "["<< recvForm->name <<"] Left the chat room" <<endl;
+				//			printf("\t Remote Address:  %s closed connection\n", inet_ntoa(client_addr.sin_addr));
+							if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
+							{
+								perror("thread create error : ");
+								exit(0);
+							}
 							close(sockfd);
 							FD_CLR(sockfd, &allset);
 							initClientInfo(i);
@@ -279,7 +299,7 @@ int main(int argc, char **argv){
 void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg){
 	int n = 0;
 	int bytes_to_read = sizeof(MsgStr);
-	while ((n = recv(clientList[i].sockNum, (MsgStr *)rcvMsg, bytes_to_read, 0)) < 0)
+	while ((n = recv(clientList[i].sockNum, (MsgStr *)rcvMsg, bytes_to_read, 0)) > bytes_to_read)
 	{
 		printf("n is %d\n", n);
 		rcvMsg+=n;
@@ -291,32 +311,30 @@ printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rc
 
 	switch(rcvMsg->type){
 		case MSG_CONN:
-		  //sendMsg->type = MSG_MESG;
 			strcpy(clientList[i].name, rcvMsg->name);
-//			sprintf(sendMsg->msgTxt,"%s is connected", rcvMsg->name);
+	//		createMsg(sendMsg, MSG_CONN, i, rcvMsg->msgTxt);
+
 			sendList(clientList[i].sockNum);
 			createMsg(sendMsg, MSG_CONN, i, rcvMsg->msgTxt);
-			/*
-			strcpy(sendMsg->name, clientList[i].name);
-			sprintf(sendMsg->msgTxt,"%s is connected", rcvMsg->name);
-			*/
-
 			printf("TEST MSG_CONN : name - %s   : update %s\n", rcvMsg->name, clientList[i].name);
 			break;
-		case MSG_NAME:
+/*		case MSG_NAME:
 			strcpy(clientList[i].name, rcvMsg->name);
-			break;
+						break;
+*/
 		case MSG_MESG:
 			printf("the recv message type: %d  context%s\n", rcvMsg->type, rcvMsg->msgTxt);
 			createMsg(sendMsg, MSG_MESG, i, rcvMsg->msgTxt);
-			/*
-			strcpy(sendMsg->name, clientList[i].name);
-			strcpy(sendMsg->msgTxt, rcvMsg->msgTxt);
-			sendMsg->type  = MSG_MESG;
-			*/
+				break;
+		case MSG_QUIT:
+			printf("CLIENT %s LEAVE", rcvMsg->name);
+			createMsg(sendMsg, MSG_QUIT, i, "client leave");
 			break;
+
+
+
 	}
-	printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n", sendMsg->type, sendMsg->name, sendMsg->msgTxt);
+//	printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n", sendMsg->type, sendMsg->name, sendMsg->msgTxt);
 }
 
 int open_socket(int port = DEFAULT_PORT){

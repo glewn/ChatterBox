@@ -2,13 +2,32 @@
 #include <QDebug>
 
 int sockNum = -1;
+Clients list[MAXUSER] = {0};
 Client *parentx;
 
 clientSrc::clientSrc(QWidget *parent)
 {
     parentx = qobject_cast<Client*>(parent);
 }
-
+void recvList()
+{
+  Clients *listRcv = list;
+  int n = 0, bytes_to_read;
+  bytes_to_read = sizeof(list);
+qDebug("received new List");
+    while ((n = recv (sockNum, (MsgStr *)listRcv, bytes_to_read, 0)) < bytes_to_read)
+    {
+      listRcv += n;
+      bytes_to_read -= n;
+    }
+     qDebug("received new List OK");
+    for(int i =0; i < MAXUSER; i++){
+        if(list[i].sockNum <0)
+            continue;
+        else
+             qDebug()<<"client "<< list[i].name<<"\t";
+    }
+}
 void *readMsg(void *sock)
 {
     int sockNum = *((int*)sock);
@@ -34,10 +53,11 @@ void *readMsg(void *sock)
                 break;
             case MSG_QUIT:
                 qDebug("sb quit");
+                recvList();
                 break;
             case MSG_CONN:
                 qDebug("%s enter the chat room\n", MsgRcv->name);
-
+                recvList();
                 break;
             case MSG_MESG:
                 QString s(MsgRcv->msgTxt);
@@ -87,23 +107,13 @@ void clientSrc::clientStart()
     qDebug("\t - read thread created...\n");
 }
 
-void clientSrc::recvList()
-{
-  Clients *listRcv = list;
-  int n = 0, bytes_to_read;
-  bytes_to_read = sizeof(list);
 
-    while ((n = recv (sockNum, (MsgStr *)listRcv, bytes_to_read, 0)) < bytes_to_read)
-    {
-      listRcv += n;
-      bytes_to_read -= n;
-    }
-}
 
 void clientSrc::sendPersonalInfo()
 {
     MsgStr *myInfo, infoTxt;
     myInfo = &infoTxt;
+
 
     myInfo->type = MSG_CONN;
     strcpy(myInfo->name, nickname.c_str());
