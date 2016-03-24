@@ -6,7 +6,7 @@ Run
 		"./server <port>"   
 			: port number is optional. Default port is 7000.
     - Client
-	use source file [../Execute]
+	use source file [../Executable]
 		- "./ChatterBox"  : It will open client UI
 		- input IP address, Port number, nickname
 		- press 'OK' button
@@ -32,8 +32,6 @@ Directory
 	    logfile.txt				 : server side log file to check message flow
 	    makefile				 : easy to make object
 
-    - Execute
-	- server
-	    server
-	- client
-	    ChatterBox and other objects
+    - Executable
+	server					: server file
+	ChatterBox				: client file
