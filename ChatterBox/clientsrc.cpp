@@ -113,7 +113,7 @@ void clientSrc::sendPersonalInfo()
 void clientSrc::createMsg(MsgStr *mesgForm, int typeNum, const char *message)
 {
     mesgForm->type = typeNum;
-    strcpy(mesgForm->name, message);
+    strcpy(mesgForm->name, nickname.c_str());
     strcpy(mesgForm->msgTxt, message);
 }
 
