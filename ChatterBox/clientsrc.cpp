@@ -53,7 +53,7 @@ void *readMsg(void *sock){
                 break;
 
         }
-        fflush(stdout);
+        //fflush(stdout);
 
     }
     return (0);
