@@ -18,7 +18,7 @@
 #include "Value.h"
 
 extern int sockNum;
-
+extern Clients list[MAXUSER];
 class clientSrc
 {
 public:
@@ -27,9 +27,9 @@ public:
     void createMsg(MsgStr *mesgForm, int typeNum, const char *message);
     void sendPersonalInfo();
     void writeMsg(int type, std::string message);
-    void recvList();
+//    void recvList();
 
-    Clients list[MAXUSER];
+
 
     QWidget *parent;
 };
