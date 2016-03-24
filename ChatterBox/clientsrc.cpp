@@ -60,6 +60,7 @@ void *readMsg(void *sock){
 
         }
 
+
     }
     return (0);
 }

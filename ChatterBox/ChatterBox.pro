@@ -15,20 +15,15 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     connection.cpp \
-    server.cpp \
     client.cpp \
-    clientsrc.cpp \
-    serversrc.cpp
+    clientsrc.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
-    server.h \
     client.h \
     clientsrc.h \
-    serversrc.h \
     Value.h
 
 FORMS    += mainwindow.ui \
     connection.ui \
-    server.ui \
     client.ui

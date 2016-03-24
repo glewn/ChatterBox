@@ -64,7 +64,6 @@ void Client::resizeEvent(QResizeEvent * event)
 void Client::on_msgInput_returnPressed()
 {
     if(!ui->msgInput->text().isEmpty()) {
-        ui->msgDisplay->append(this->build_string(ui->msgInput->text()));
         csrc->writeMsg(this->build_string(ui->msgInput->text()).toStdString());
         ui->msgInput->clear();
     }
@@ -73,15 +72,6 @@ void Client::on_msgInput_returnPressed()
 void Client::on_sendBtn_clicked()
 {
     Client::on_msgInput_returnPressed();
-}
-
-
-void Client::displayChatMessage(std::string name, std::string message){
-
-    std::stringstream ss;
-    ss << "["<< name <<"] "<<message;
-    ui->msgDisplay->append(QString::fromStdString(ss.str()));
-
 }
 
 QString Client::build_string(QString msg) {
@@ -113,5 +103,12 @@ QString Client::build_string(QString msg) {
 void Client::print_msg(QString msg)
 {
     ui->msgDisplay->append(msg);
+    scroll_to_bottom();
 }
 
+void Client::scroll_to_bottom()
+{
+    QTextCursor c = ui->msgDisplay->textCursor();
+    c.movePosition(QTextCursor::End);
+    ui->msgDisplay->setTextCursor(c);
+}
