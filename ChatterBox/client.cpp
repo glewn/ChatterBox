@@ -1,6 +1,9 @@
 #include "client.h"
 #include "ui_client.h"
 #include "mainwindow.h"
+#include "clientsrc.h"
+
+clientSrc *csrc;
 
 Client::Client(QWidget *parent) :
     QWidget(parent),
@@ -21,12 +24,8 @@ Client::Client(QWidget *parent) :
         showEvent(NULL);
     }
 
-    /*
-    color = QColorDialog::getColor(Qt::black, this, "Text Color",  QColorDialog::DontUseNativeDialog);
-    if(color.isValid()) {
-        fmt.append(color.name());
-    }
-    */
+    csrc = new clientSrc(this);//host, port);
+    csrc->clientStart();
 }
 
 Client::~Client()
@@ -66,7 +65,7 @@ void Client::on_msgInput_returnPressed()
 {
     if(!ui->msgInput->text().isEmpty()) {
         ui->msgDisplay->append(this->build_string(ui->msgInput->text()));
-
+        csrc->writeMsg(this->build_string(ui->msgInput->text()).toStdString());
         ui->msgInput->clear();
     }
 }
@@ -74,6 +73,15 @@ void Client::on_msgInput_returnPressed()
 void Client::on_sendBtn_clicked()
 {
     Client::on_msgInput_returnPressed();
+}
+
+
+void Client::displayChatMessage(std::string name, std::string message){
+
+    std::stringstream ss;
+    ss << "["<< name <<"] "<<message;
+    ui->msgDisplay->append(QString::fromStdString(ss.str()));
+
 }
 
 QString Client::build_string(QString msg) {
@@ -100,5 +108,10 @@ QString Client::build_string(QString msg) {
        << ";font-family:" << usrFont.style.family().toStdString() << "'>" << msg.toStdString() << "</span>";
 
     return QString::fromStdString(ss.str());
+}
+
+void Client::print_msg(QString msg)
+{
+    ui->msgDisplay->append(msg);
 }
 
