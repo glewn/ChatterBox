@@ -12,7 +12,6 @@
 #include <sstream>
 #include <string>
 #include "client.h"
-#include "server.h"
 #include "connection.h"
 
 namespace Ui {
@@ -62,7 +61,6 @@ private:
 
     // Pointer to the widgets
     Client *clnt;
-    Server *svr;
     QWidget *conn;
 };
 

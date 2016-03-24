@@ -51,8 +51,7 @@ void MainWindow::on_actionClient_triggered()
 
 void MainWindow::on_actionServer_triggered()
 {
-    svr = new Server;
-    setCentralWidget(svr);
+
     //testing
     /*
     set_app_title("whatevs");

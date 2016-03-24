@@ -29,7 +29,6 @@ public:
     void writeMsg(std::string message);
     void recvList();
 
-
     Clients list[MAXUSER];
 
     QWidget *parent;
