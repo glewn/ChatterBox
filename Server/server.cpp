@@ -76,11 +76,22 @@ void *writeMsg(void * messageStr){
 
 	struct message *msge = (struct message *)messageStr;
 	printf("\n\nMsgType :%d, writeMsg Thread: %s\n",msge->type, msge->msgTxt);
+	if(strcmp(msge->msgTxt, "\n")==0){
+		printf("[%s]EMPTY MESSAGE ", msge->name);
+		return 0;
+	}
 	for(int i = 0; i <=maxi; i++){
-		if(client[i] < 0)
+		if(clientList[i].sockNum < 0){
+			printf("noperson");
 			continue;
+		}
+		else if(strcmp(clientList[i].name, msge->name)==0)
+		{
+			printf("SENDER\n");
+			continue;
+		}
 		write(clientList[i].sockNum, (void *)msge, sizeof(MsgStr));
-		printf("write to client[%d]: %d\n",i, clientList[i].sockNum);
+		printf("write to client[%d]: %d: %s\n",i, clientList[i].sockNum, clientList[i].name);
 	}
 	printf("Success writeMsg\n");
 	return 0;
@@ -93,7 +104,7 @@ void writeOne(int clientIdx, MsgStr *fullMsg){
 void write_to_all(MsgStr *fullMsg, int maxi){
 //	struct message *msg = fullMsg;
 	for(int i = 0; i <maxi; i++){
-		if(client[i] < 0)
+		if(clientList[i].sockNum < 0)
 			continue;
 			write(clientList[i].sockNum, (void *)fullMsg, sizeof(MsgStr));
 	}
@@ -120,6 +131,8 @@ int main(int argc, char **argv){
 	int listen_sd, new_sd, sockfd, port, maxfd ;//client array
 	socklen_t  client_len;
 	struct sockaddr_in client_addr;
+	MsgStr conMsg;
+	//char buf[MSGSIZE], *bp;//, *bpname, nameBuf[NAMESIZE];
 
 	fd_set rset, allset;
 	pthread_t threadid;
@@ -182,6 +195,7 @@ int main(int argc, char **argv){
 				{
 					clientList[i].sockNum = new_sd;
 
+					//createMsg(&conMsg, MSG_CONN, i, "new user");
 
 					break;
 				}
@@ -265,27 +279,27 @@ int main(int argc, char **argv){
 void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg){
 	int n = 0;
 	int bytes_to_read = sizeof(MsgStr);
-	while ((n = recv(clientList[i].sockNum, (MsgStr *)rcvMsg, bytes_to_read, 0)) <bytes_to_read)
+	while ((n = recv(clientList[i].sockNum, (MsgStr *)rcvMsg, bytes_to_read, 0)) < 0)
 	{
-		if(n<0){
-			rcvMsg->type = 0;
-			strcpy(rcvMsg->name, "");
-			strcpy(rcvMsg->msgTxt,"");
-			return;
-		}
 		printf("n is %d\n", n);
 		rcvMsg+=n;
 		bytes_to_read -= n;
 	}
 
 	printf("RECV SUCCESS\n");
-	printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rcvMsg->msgTxt);
+printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rcvMsg->msgTxt);
 
 	switch(rcvMsg->type){
 		case MSG_CONN:
+		  //sendMsg->type = MSG_MESG;
 			strcpy(clientList[i].name, rcvMsg->name);
+//			sprintf(sendMsg->msgTxt,"%s is connected", rcvMsg->name);
 			sendList(clientList[i].sockNum);
 			createMsg(sendMsg, MSG_CONN, i, rcvMsg->msgTxt);
+			/*
+			strcpy(sendMsg->name, clientList[i].name);
+			sprintf(sendMsg->msgTxt,"%s is connected", rcvMsg->name);
+			*/
 
 			printf("TEST MSG_CONN : name - %s   : update %s\n", rcvMsg->name, clientList[i].name);
 			break;
@@ -295,13 +309,15 @@ void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg){
 		case MSG_MESG:
 			printf("the recv message type: %d  context%s\n", rcvMsg->type, rcvMsg->msgTxt);
 			createMsg(sendMsg, MSG_MESG, i, rcvMsg->msgTxt);
-
+			/*
+			strcpy(sendMsg->name, clientList[i].name);
+			strcpy(sendMsg->msgTxt, rcvMsg->msgTxt);
+			sendMsg->type  = MSG_MESG;
+			*/
 			break;
 	}
 	printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n", sendMsg->type, sendMsg->name, sendMsg->msgTxt);
 }
-
-
 
 int open_socket(int port = DEFAULT_PORT){
 	int arg;
@@ -312,6 +328,7 @@ int open_socket(int port = DEFAULT_PORT){
 	if ((listen_sd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		SystemFatal("Cannot Create Socket!");
 
+	//set SO_REUSEADDR so port can be resused imemediately after exit, i.e., after CTRL-c
     arg = 1;
     if (setsockopt (listen_sd, SOL_SOCKET, SO_REUSEADDR, &arg, sizeof(arg)) == -1)
         SystemFatal("setsockopt");

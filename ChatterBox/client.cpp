@@ -24,7 +24,7 @@ Client::Client(QWidget *parent) :
         showEvent(NULL);
     }
 
-    csrc = new clientSrc(this);//host, port);
+    csrc = new clientSrc(this, parent);//host, port);
     csrc->clientStart();
 }
 
