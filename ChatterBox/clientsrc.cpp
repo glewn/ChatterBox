@@ -24,9 +24,9 @@ qDebug("received new List");
     for(int i =0; i < MAXUSER; i++){
         if(list[i].sockNum <0)
             continue;
-        else
-             qDebug()<<"client "<< list[i].name<<"\t";
+     qDebug()<<"client "<< list[i].name<<"\t";
     }
+    parentx->update_list();
 }
 void *readMsg(void *sock)
 {

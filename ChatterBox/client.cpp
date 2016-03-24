@@ -117,3 +117,14 @@ void Client::scroll_to_bottom()
 void Client::client_quit() {
     csrc->writeMsg(MSG_QUIT, "Bye");
 }
+
+void Client::update_list() {
+    int j = 0;
+    ui->userList->clear();
+    for(int i =0; i <MAXUSER; i++){
+        if(list[i].sockNum >0) {
+            QString s(list[i].name);
+            ui->userList->insertItem(j++, s);
+        }
+    }
+}
