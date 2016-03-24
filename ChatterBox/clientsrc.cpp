@@ -127,7 +127,6 @@ void *readMsg(void *sock)
     MsgStr *MsgRcv, rcvform;
     MsgRcv = &rcvform;
     QString s;
-    qDebug("RcvThread");
 
     while(1){
         n = 0;
@@ -152,7 +151,7 @@ void *readMsg(void *sock)
                 break;
             case MSG_CONN:
                 qDebug("%s enter the chat room\n###", MsgRcv->name);
-                s = QString("** \'%1\' enter **").arg(MsgRcv->name);
+                s = QString("** \'%1\' entered **").arg(MsgRcv->name);
                 parentx->print_msg(s);recvList();
                 break;
             case MSG_MESG:

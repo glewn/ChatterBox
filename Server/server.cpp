@@ -69,7 +69,7 @@
 ----------------------------------------------------------------------------------------------------------------------*/
 int main(int argc, char **argv){
 	int i, nready;
-	int listen_sd, new_sd, sockfd, port, maxfd ;//client array
+	int listen_sd, new_sd, sockfd, port, maxfd ;
 	socklen_t  client_len;
 	struct sockaddr_in client_addr;
 
@@ -77,15 +77,14 @@ int main(int argc, char **argv){
 	pthread_t threadid;
 	int thr_id =0;
 
-	signal (SIGINT, sig_handler);
 
 	switch(argc)
 	{
 		case 1:
-			port = DEFAULT_PORT;	// Use the default port
+			port = DEFAULT_PORT;
 		break;
 		case 2:
-			port = atoi(argv[1]);	// Get user specified port
+			port = atoi(argv[1]);
 		break;
 		default:
 			fprintf(stderr, "Usage: %s [port]\n", argv[0]);
@@ -105,8 +104,8 @@ int main(int argc, char **argv){
 
 
 
-	maxfd	= listen_sd;	// initialize
-	maxi	= -1;		// index into client[] array
+	maxfd	= listen_sd;
+	maxi	= -1;
 
 	for (i = 0; i < MAXUSER; i++){
       initClientInfo(i);
@@ -142,8 +141,8 @@ int main(int argc, char **argv){
 
 			}
 
-			//tempolarly use MAXUSER
-			if (i == MAXUSER)//FD_SETSIZE)
+
+			if (i == MAXUSER)
 			{
 				 MsgStr errMsg;
 				 createMsg(&errMsg, MSG_QUIT,i,"sorry no space");
@@ -200,6 +199,7 @@ int main(int argc, char **argv){
 							perror("thread create error : ");
 							exit(0);
 						}
+						//close the socket and delet information
 						close(sockfd);
 						FD_CLR(sockfd, &allset);
 						initClientInfo(i);
@@ -459,12 +459,11 @@ void *writeMsg(void * messageStr){
 	}
 	for(int i = 0; i <=maxi; i++){
 		if(clientList[i].sockNum < 0){
-			printf("noperson");
 			continue;
 		}
 		else if(strcmp(clientList[i].name, msge->name)==0)
 		{
-			printf("SENDER\n");
+			printf("not sent to SENDER\n");
 			continue;
 		}
 		write(clientList[i].sockNum, (void *)msge, sizeof(MsgStr));

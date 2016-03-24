@@ -3,11 +3,11 @@
 
 #define DEFAULT_PORT		7000	// Default port
 #define BUFLEN		  255  	// Buffer length
-#define TRUE	1
-#define LISTENQ	5
-#define MAXLINE 4096
+#define TRUE	   1
+#define LISTENQ	 5
+#define MAXLINE  4096
 #define NAMESIZE 20
-#define MAXUSER 10
+#define MAXUSER  50
 //message type initializew
 #define MSG_CONN 10000
 #define MSG_NAME 10001
