@@ -1,3 +1,31 @@
+/*------------------------------------------------------------------------------------------------------------------
+-- SOURCE FILE: ClientSrc.cpp
+--
+-- PROGRAM: 	ChatterBox
+--
+-- FUNCTIONS:
+-- void daemonize (void)
+--	
+--
+--
+-- DATE		 : March 9, 2016
+--
+-- REVISIONS : March 10, 2016    - add send thread
+--			   March 13, 2016	 - add  message structure
+--			   March 16, 2016	 - update List
+--
+--
+-- DESIGNER	 : Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: Eunwon Moon
+--
+-- NOTES:
+-- 	This program is Serverside code to connect users to chat.
+--	It will be working using multiplexing to detect signal from client.
+--	depending on the what type of message the client sent, it will do different working
+--	to notify other users; for example, echo message, connection and quit notiication,
+--	or update user list. 
+----------------------------------------------------------------------------------------------------------------------*/
 
 //#server
 #include <stdio.h>
@@ -46,12 +74,54 @@ Clients clientList[MAXUSER];
 void receiveMsg(int, MsgStr*, MsgStr*);
 
 
-// Prints the error stored in errno and aborts the program.
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	SystemFatal
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	static void SystemFatal(const char* message)
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is to send message depending on message type and message
+--	Using createMsg function, generate message and send it
+--	if the message type is QUIT, close socket to block sending garbage character
+--	or signal.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 static void SystemFatal(const char* message)
 {
     perror (message);
-//    exit (EXIT_FAILURE);
 }
+
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	initClientInfo
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void initClientInfo(int i)
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is to initialize clientList.
+--	socketNum will be -1, and the user name will be user + index name.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void initClientInfo(int i){
 	char temp[NAMESIZE];
 	if(i >=0 && i < MAXUSER){
@@ -64,6 +134,31 @@ void initClientInfo(int i){
 
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	createMsg
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void createMsg(MsgStr* fullMsg, int type, int i, const char *msgText)
+--						MsgStr* fullMsg : message structure point to send
+--						int type		: type of the message
+--						int i			: index number of client from select
+--						const char *msgText : message to send
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is to create message easily.
+--	Depending on the index number of multiplex, find user name and fill the form of message
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void createMsg(MsgStr* fullMsg, int type, int i, const char *msgText){
 	fullMsg->type = type;
 	if(i < MAXUSER)
@@ -74,10 +169,56 @@ void createMsg(MsgStr* fullMsg, int type, int i, const char *msgText){
 	printf("CreateMsg - type: %d, client: %s, txt: %s\n", fullMsg->type, fullMsg->name, fullMsg->msgTxt);
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	sendList
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void sendList(int sockNum)
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is to send clients list(user list) to client.
+--  receive socketnumber, which is clients socket number, and send it to a certain client.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void sendList(int sockNum){
 	Clients *list = clientList;
 	write(sockNum, (void *)list, sizeof(clientList));
 }
+
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	writeMsg(void * messageStr)
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void *writeMsg(void * messageStr)
+--						void * messageStr:  message string structure to send
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is write thread to send message to clients.
+--	receive message structure and send to all client in the list except the message sender
+--	If the message type is MSG_CONN or MSG_QUIT, which means someone is entered or left,
+--	call sendList function to update list of users.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void *writeMsg(void * messageStr){
 
 	struct message *msge = (struct message *)messageStr;
@@ -108,22 +249,56 @@ void *writeMsg(void * messageStr){
 	return 0;
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	writeOne
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void writeOne(int clientIdx, MsgStr *fullMsg)
+--						void * messageStr:  message string structure to send
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is write thread to send message to clients.
+--	receive message structure and send to all client in the list except the message sender
+--	If the message type is MSG_CONN or MSG_QUIT, which means someone is entered or left,
+--	call sendList function to update list of users.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void writeOne(int clientIdx, MsgStr *fullMsg){
 		write((clientIdx<MAXUSER)?clientList[clientIdx].sockNum:clientIdx, (void *)fullMsg, sizeof(MsgStr));
 }
 
-void write_to_all(MsgStr *fullMsg, int maxi){
-//	struct message *msg = fullMsg;
-	for(int i = 0; i <maxi; i++){
-		if(clientList[i].sockNum < 0)
-			continue;
-			write(clientList[i].sockNum, (void *)fullMsg, sizeof(MsgStr));
-	}
-
-}
 
 
-
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	client_display
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void client_display(int maxi)
+--						int maxi : the max index number in the client list.
+--
+-- RETURNS: void 
+--
+-- NOTES:
+--	This method is to display client list in server consol.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void client_display(int maxi){
 	fprintf(stdout, "************* client List *************\n");
 	for(int i = 0; i <= maxi; i++){
@@ -136,20 +311,41 @@ void client_display(int maxi){
 
 
 
-
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	main
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	int main(int argc, char **argv)
+--						argc: the number of input argument
+--						argv: the pointer of array which is input arguments
+--
+-- RETURNS: int
+--
+-- NOTES:
+--	This method is main method of server side. Using console, read port number or use default one
+--	Using input information, open server socket and start to write log finle.
+--	using select, multiplx clients and detect who send the message. 
+--	receive the message and generate and echo back to others.
+--	if the user sent quit message close the socket and clear that users infom 
+--  on the client list 
+--
+----------------------------------------------------------------------------------------------------------------------*/
 int main(int argc, char **argv){
-	int i, nready;//, bytes_to_read, n;
+	int i, nready;
 	int listen_sd, new_sd, sockfd, port, maxfd ;//client array
 	socklen_t  client_len;
 	struct sockaddr_in client_addr;
 
-	//char buf[MSGSIZE], *bp;//, *bpname, nameBuf[NAMESIZE];
-
 	fd_set rset, allset;
 	pthread_t threadid;
 	int thr_id =0;
-
-	int open_socket(int);
 
 	switch(argc)
 	{
@@ -166,8 +362,13 @@ int main(int argc, char **argv){
 
 
 	listen_sd = open_socket(port);
+	
+	//define saving file.
 	ofstream log("logfile.txt", ios_base::trunc | ios_base::out);
 	log << "socket connected" << endl;
+	
+	
+	
 	bzero(clientList, sizeof(clientList));
 
 
@@ -198,8 +399,6 @@ int main(int argc, char **argv){
 			if ((new_sd = accept(listen_sd, (struct sockaddr *) &client_addr, &client_len)) == -1)
 				SystemFatal("accept error");
 
-	//		printf(" Remote Address:  %s\n", inet_ntoa(client_addr.sin_addr));
-
 
 			for (i = 0; i < MAXUSER; i++){
 				fprintf(stdout, "%d ", i);
@@ -210,9 +409,6 @@ int main(int argc, char **argv){
 				}
 
 			}
-//			printf("\nbreak client declare\n");
-			//**** designing scaling server :
-			//dont realize why it is working ***ALWAYS CHECKING
 
 			//tempolarly use MAXUSER
 			if (i == MAXUSER)//FD_SETSIZE)
@@ -221,7 +417,6 @@ int main(int argc, char **argv){
 				 createMsg(&errMsg, MSG_QUIT,i,"sorry no space");
 				 writeOne(new_sd, &errMsg);
 				 log <<"CHAT ROOM IS FULL." <<endl;
-//				 SystemFatal("Too many clients\n");
 			}
 			else{
 				log << "client [" << inet_ntoa(client_addr.sin_addr)
@@ -233,11 +428,11 @@ int main(int argc, char **argv){
 				maxfd = new_sd;	// for select
 
 			if (i > maxi)
-				maxi = i;	// new max index in client[] array
-//				printf("check nready :%d\tmaxi: %d\n", nready,maxi);
+				maxi = i;
+			
 			if (--nready <= 0)
 				continue;	// no more readable descriptors
-//			printf("more nready\n");
+
 		}
 
 		for (i = 0; i <= maxi; i++)	// check all clients for data
@@ -256,36 +451,31 @@ int main(int argc, char **argv){
 
 				switch(recvForm->type){
 					case MSG_CONN:
-
 					case MSG_MESG:
-							log <<"Receive From ["<< recvForm->name <<"]: " << recvForm->msgTxt<<endl;
-							log <<"echo to all client" << endl;
-							if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
-							{
-								perror("thread create error : ");
-								exit(0);
-							}
-							break;
+						log <<"Receive From ["<< recvForm->name <<"]: " << recvForm->msgTxt<<endl;
+						log <<"echo to all client" << endl;
+						if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
+						{
+							perror("thread create error : ");
+							exit(0);
+						}
+						break;
 
 					case MSG_QUIT:
-							log<< "["<< recvForm->name <<"] Left the chat room" <<endl;
-				//			printf("\t Remote Address:  %s closed connection\n", inet_ntoa(client_addr.sin_addr));
-							if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
-							{
-								perror("thread create error : ");
-								exit(0);
-							}
-							close(sockfd);
-							FD_CLR(sockfd, &allset);
-							initClientInfo(i);
-							break;
+						log<< "["<< recvForm->name <<"] Left the chat room" <<endl;
+						if ((thr_id = pthread_create(&threadid, NULL, writeMsg,(void *)sendForm)) < 0)
+						{
+							perror("thread create error : ");
+							exit(0);
+						}
+						close(sockfd);
+						FD_CLR(sockfd, &allset);
+						initClientInfo(i);
+						break;
 				}
-
-
 
 				if (--nready > 0){
 							continue;        // no more readable descriptors
-							printf("nready  left\n");
 				}
 				client_display(maxi);
 			}
@@ -295,6 +485,32 @@ int main(int argc, char **argv){
 }
 
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	receiveMsg
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg)
+--						argc: the number of input argument
+--						argv: the pointer of array which is input arguments
+--
+-- RETURNS: int
+--
+-- NOTES:
+--	This method is main method of server side. Using console, read port number or use default one
+--	Using input information, open server socket and start to write log finle.
+--	using select, multiplx clients and detect who send the message. 
+--	receive the message and generate and echo back to others.
+--	if the user sent quit message close the socket and clear that users infom 
+--  on the client list 
+--
+----------------------------------------------------------------------------------------------------------------------*/
 void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg){
 	int n = 0;
 	int bytes_to_read = sizeof(MsgStr);
@@ -306,21 +522,15 @@ void receiveMsg(int i, MsgStr* sendMsg, MsgStr* rcvMsg){
 	}
 
 	printf("RECV SUCCESS\n");
-printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rcvMsg->msgTxt);
+	printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rcvMsg->msgTxt);
 
 	switch(rcvMsg->type){
 		case MSG_CONN:
 			strcpy(clientList[i].name, rcvMsg->name);
-	//		createMsg(sendMsg, MSG_CONN, i, rcvMsg->msgTxt);
-
 			sendList(clientList[i].sockNum);
 			createMsg(sendMsg, MSG_CONN, i, rcvMsg->msgTxt);
 			printf("TEST MSG_CONN : name - %s   : update %s\n", rcvMsg->name, clientList[i].name);
 			break;
-/*		case MSG_NAME:
-			strcpy(clientList[i].name, rcvMsg->name);
-						break;
-*/
 		case MSG_MESG:
 			printf("the recv message type: %d  context%s\n", rcvMsg->type, rcvMsg->msgTxt);
 			createMsg(sendMsg, MSG_MESG, i, rcvMsg->msgTxt);
@@ -329,13 +539,32 @@ printf("TEST type %d : name - %s   : update %s\n",rcvMsg->type, rcvMsg->name, rc
 			printf("CLIENT %s LEAVE", rcvMsg->name);
 			createMsg(sendMsg, MSG_QUIT, i, "client leave");
 			break;
-
-
-
 	}
-//	printf("RESULT Of SEND: Type %d, Name %s\n\tText: %s\n", sendMsg->type, sendMsg->name, sendMsg->msgTxt);
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION:	open_socket
+--
+-- DATE: 		March 13, 2016
+--
+-- REVISIONS: 	
+--
+-- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
+--
+-- PROGRAMMER: 	Eunwon Moon
+--
+-- INTERFACE: 	int open_socket(int port = DEFAULT_PORT)
+--						port : the port number to open server socket,
+--							   if EMPTY use DEFAULT_PORT, which is 7000
+--
+-- RETURNS: int
+--
+-- NOTES:
+--	This method is to open socket using port information.
+--	It will do all things related to open server: such as opening socket,
+--	setting socket option, binding and listening.
+--
+----------------------------------------------------------------------------------------------------------------------*/
 int open_socket(int port = DEFAULT_PORT){
 	int arg;
 	int listen_sd =0;
@@ -366,7 +595,5 @@ int open_socket(int port = DEFAULT_PORT){
 
 	listen(listen_sd, LISTENQ);
 
-
 	return listen_sd;
-
 }
