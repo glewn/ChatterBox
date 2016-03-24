@@ -37,6 +37,7 @@ void *readMsg(void *sock)
                 break;
             case MSG_CONN:
                 qDebug("%s enter the chat room\n", MsgRcv->name);
+
                 break;
             case MSG_MESG:
                 QString s(MsgRcv->msgTxt);
