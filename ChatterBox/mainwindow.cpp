@@ -77,3 +77,8 @@ void MainWindow::client_start()
     clnt = new Client(this);
     setCentralWidget(clnt);
 }
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    clnt->client_quit();
+}

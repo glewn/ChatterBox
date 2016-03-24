@@ -23,7 +23,7 @@ Client::Client(QWidget *parent) :
         ui->profilePic->setScene(scene);
         showEvent(NULL);
     }
-    //mw = qobject_cast<MainWindow*>(grandparent);
+
     csrc = new clientSrc(this);//host, port);
     csrc->clientStart();
 }
@@ -64,7 +64,8 @@ void Client::resizeEvent(QResizeEvent * event)
 void Client::on_msgInput_returnPressed()
 {
     if(!ui->msgInput->text().isEmpty()) {
-        csrc->writeMsg(this->build_string(ui->msgInput->text()).toStdString());
+        ui->msgDisplay->append(this->build_string(ui->msgInput->text()));
+        csrc->writeMsg(MSG_MESG, this->build_string(ui->msgInput->text()).toStdString());
         ui->msgInput->clear();
     }
 }
@@ -113,3 +114,6 @@ void Client::scroll_to_bottom()
     ui->msgDisplay->setTextCursor(c);
 }
 
+void Client::client_quit() {
+    csrc->writeMsg(MSG_QUIT, "Bye");
+}
