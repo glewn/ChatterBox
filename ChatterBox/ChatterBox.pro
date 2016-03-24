@@ -10,18 +10,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ChatterBox
 TEMPLATE = app
-
+CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     connection.cpp \
     server.cpp \
-    client.cpp
+    client.cpp \
+    clientsrc.cpp \
+    serversrc.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
     server.h \
-    client.h
+    client.h \
+    clientsrc.h \
+    serversrc.h \
+    Value.h
 
 FORMS    += mainwindow.ui \
     connection.ui \

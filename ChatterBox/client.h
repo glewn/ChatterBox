@@ -24,6 +24,8 @@ public:
     ~Client();
     void drawProfilePic();
     QString build_string(QString msg);
+    void displayChatMessage(std::string name, std::string message);
+    void print_msg(QString msg);
 
 protected:
 
@@ -46,6 +48,7 @@ private:
     QString fmt;
 
     QColor color;
+
 };
 
 #endif // CLIENT_H

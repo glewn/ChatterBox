@@ -8,6 +8,9 @@ Connection::Connection(QWidget *parent) :
     ui(new Ui::Connection)
 {
     ui->setupUi(this);
+    ui->hostInput->setText("127.0.0.1");
+    ui->portInput->setText("7000");
+    ui->nameInput->setText("popo");
 }
 
 Connection::~Connection()

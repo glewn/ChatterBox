@@ -1,8 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "clientsrc.h"
 
 std::string host = "";
-int port = 0;
+int port = DEFAULT_PORT;
 std::string nickname = "";
 QString imagePath = NULL;
 bool isPicSet = false;
@@ -72,6 +73,7 @@ void MainWindow::on_actionConnect_triggered()
     conn->show();
     conn->setFixedSize(conn->size());
 }
+
 void MainWindow::on_actionFont_Color_triggered()
 {
     QColor color = QColorDialog::getColor(Qt::black, this, "Text Color",  QColorDialog::DontUseNativeDialog);
