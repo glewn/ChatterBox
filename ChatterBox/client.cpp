@@ -23,8 +23,8 @@ Client::Client(QWidget *parent) :
         ui->profilePic->setScene(scene);
         showEvent(NULL);
     }
-
-    csrc = new clientSrc(this, parent);//host, port);
+    //mw = qobject_cast<MainWindow*>(grandparent);
+    csrc = new clientSrc(this);//host, port);
     csrc->clientStart();
 }
 
@@ -112,3 +112,4 @@ void Client::scroll_to_bottom()
     c.movePosition(QTextCursor::End);
     ui->msgDisplay->setTextCursor(c);
 }
+
