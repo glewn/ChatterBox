@@ -17,16 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     usrFont.color = "#333333";
     usrFont.style = QFont("Arial", 12);
+
+    conn = new Connection(this);
+    setCentralWidget(conn);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::set_status(QString str)
-{
-    ui->statusBar->showMessage(str);
 }
 
 void MainWindow::set_app_title(QString str)
@@ -43,22 +41,6 @@ void MainWindow::set_style()
     qApp->setStyleSheet(StyleSheet);
 }
 
-void MainWindow::on_actionClient_triggered()
-{
-    clnt = new Client(this);
-    setCentralWidget(clnt);
-}
-
-void MainWindow::on_actionServer_triggered()
-{
-
-    //testing
-    /*
-    set_app_title("whatevs");
-    set_style();
-    */
-}
-
 void MainWindow::on_actionProfile_Pic_triggered()
 {
     imagePath = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" ));
@@ -68,9 +50,8 @@ void MainWindow::on_actionProfile_Pic_triggered()
 
 void MainWindow::on_actionConnect_triggered()
 {
-    conn = new Connection;
-    conn->show();
-    conn->setFixedSize(conn->size());
+    conn = new Connection(this);
+    setCentralWidget(conn);
 }
 
 void MainWindow::on_actionFont_Color_triggered()
@@ -88,4 +69,11 @@ void MainWindow::on_actionFont_Style_triggered()
     if (ok) {
         usrFont.style = font;
     }
+}
+
+
+void MainWindow::client_start()
+{
+    clnt = new Client(this);
+    setCentralWidget(clnt);
 }

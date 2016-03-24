@@ -23,18 +23,6 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuMode">
-    <property name="title">
-     <string>Mode</string>
-    </property>
-    <addaction name="actionClient"/>
-    <addaction name="actionServer"/>
-   </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
@@ -54,29 +42,11 @@
     </property>
     <addaction name="actionConnect"/>
    </widget>
-   <widget class="QMenu" name="menuTesting">
-    <property name="title">
-     <string>Testing</string>
-    </property>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuMode"/>
    <addaction name="menuProfile"/>
    <addaction name="menuConnection"/>
    <addaction name="menuHelp"/>
-   <addaction name="menuTesting"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionClient">
-   <property name="text">
-    <string>Client</string>
-   </property>
-  </action>
-  <action name="actionServer">
-   <property name="text">
-    <string>Server</string>
-   </property>
-  </action>
   <action name="actionProfile_Pic">
    <property name="text">
     <string>Profile Pic</string>
