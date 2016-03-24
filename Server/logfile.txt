@@ -1,0 +1,90 @@
+socket connected
+client [127.0.0.1] connected - socket5
+Receive From [opop]: 
+echo to all client
+client [127.0.0.1] connected - socket6
+Receive From [user2im]: 
+echo to all client
+Receive From [opop]: [11:35:54AM]opop: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>hello</span>
+echo to all client
+Receive From [user2im]: [11:35:59AM]user2im: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>hi</span>
+echo to all client
+Receive From [user2im]: [11:36:00AM]user2im: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>who r u</span>
+echo to all client
+Receive From [opop]: [11:36:05AM]opop: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>im opop</span>
+echo to all client
+Receive From [opop]: [11:36:05AM]opop: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>hahaha</span>
+echo to all client
+Receive From [user2im]: [11:36:09AM]user2im: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>uhahaha</span>
+echo to all client
+Receive From [user2im]: [11:36:23AM]user2im: <span style='color:#000000;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>i like blue</span>
+echo to all client
+Receive From [opop]: [11:36:25AM]opop: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>no</span>
+echo to all client
+Receive From [opop]: [11:36:34AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>am i blue</span>
+echo to all client
+Receive From [user2im]: [11:36:39AM]user2im: <span style='color:#000000;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>ohohohohoh</span>
+echo to all client
+Receive From [user2im]: [11:36:52AM]user2im: <span style='color:#000000;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>am i green</span>
+echo to all client
+Receive From [user2im]: [11:37:02AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>am i green</span>
+echo to all client
+Receive From [opop]: [11:37:04AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>yes</span>
+echo to all client
+Receive From [opop]: [11:37:05AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>haha</span>
+echo to all client
+Receive From [opop]: [11:37:06AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>cool</span>
+echo to all client
+Receive From [user2im]: [11:37:11AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>bye</span>
+echo to all client
+Receive From [user2im]: [11:37:12AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>im going</span>
+echo to all client
+client [127.0.0.1] connected - socket7
+Receive From [newUSER]: 
+echo to all client
+Receive From [newUSER]: [11:38:33AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>im</span>
+echo to all client
+Receive From [newUSER]: [11:38:35AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>hu</span>
+echo to all client
+Receive From [newUSER]: [11:38:37AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>im new</span>
+echo to all client
+Receive From [opop]: [11:38:40AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>nop</span>
+echo to all client
+Receive From [opop]: [11:38:42AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>popao</span>
+echo to all client
+Receive From [user2im]: [11:38:45AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>hi</span>
+echo to all client
+Receive From [user2im]: [11:38:48AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>but im leaving</span>
+echo to all client
+Receive From [user2im]: [11:38:49AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>enjoy</span>
+echo to all client
+Receive From [user2im]: [11:38:51AM]user2im: <span style='color:#51b43b;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>byebye</span>
+echo to all client
+[user2im] Left the chat room
+Receive From [newUSER]: [11:38:57AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>no</span>
+echo to all client
+Receive From [opop]: [11:39:01AM]opop: <span style='color:#55aaff;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>so sed</span>
+echo to all client
+Receive From [newUSER]: [11:39:05AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>sad</span>
+echo to all client
+Receive From [newUSER]: [11:39:07AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>:</span>
+echo to all client
+Receive From [newUSER]: [11:39:08AM]newUSER: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>byebye</span>
+echo to all client
+client [127.0.0.1] connected - socket6
+Receive From [reallyNEWWWWW]: 
+echo to all client
+[reallyNEWWWWW] Left the chat room
+[newUSER] Left the chat room
+[opop] Left the chat room
+client [127.0.0.1] connected - socket5
+Receive From [user11111]: 
+echo to all client
+client [127.0.0.1] connected - socket6
+Receive From [22222]: 
+echo to all client
+client [127.0.0.1] connected - socket7
+Receive From [anodpf]: 
+echo to all client
+Receive From [anodpf]: [11:47:03AM]anodpf: <span style='color:#333333;font-size:12pt;font-weight:normal;text-decoration:none;font-style:normal;font-family:Arial'>adsf</span>
+echo to all client
