@@ -109,7 +109,6 @@ void *writeMsg(void * messageStr){
 }
 
 void writeOne(int clientIdx, MsgStr *fullMsg){
-	//	if
 		write((clientIdx<MAXUSER)?clientList[clientIdx].sockNum:clientIdx, (void *)fullMsg, sizeof(MsgStr));
 }
 
