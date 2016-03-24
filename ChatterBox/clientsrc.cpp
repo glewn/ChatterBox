@@ -42,7 +42,7 @@ int sockNum = -1;
 Clients list[MAXUSER] = {0};
 Client *parentx;
 
-
+//constructor of client
 clientSrc::clientSrc(QWidget *parent)
 {
     parentx = qobject_cast<Client*>(parent);
@@ -108,7 +108,7 @@ void recvList()
 --
 -- DESIGNER	 : 	Eunwon Moon, Gabriel Lee
 --
--- PROGRAMMER: 	Eunwon Moon
+-- PROGRAMMER: 	Eunwon Moon, Gabriel Lee
 --
 -- INTERFACE: 	void *readMsg(void *sock)
 --					void * sock : the socket number to communicate with server.
@@ -126,7 +126,7 @@ void *readMsg(void *sock)
     int n, bytes_to_read;
     MsgStr *MsgRcv, rcvform;
     MsgRcv = &rcvform;
-
+    QString s;
     qDebug("RcvThread");
 
     while(1){
@@ -145,14 +145,18 @@ void *readMsg(void *sock)
         switch(MsgRcv->type){
             case MSG_QUIT:
                 qDebug("client %s leave the chat room", MsgRcv->name);
+                 s= QString("** \'%1\' left **")
+                                 .arg(MsgRcv->name);
+                parentx->print_msg(s);
                 recvList();
                 break;
             case MSG_CONN:
-                qDebug("%s enter the chat room\n", MsgRcv->name);
-                recvList();
+                qDebug("%s enter the chat room\n###", MsgRcv->name);
+                s = QString("** \'%1\' enter **").arg(MsgRcv->name);
+                parentx->print_msg(s);recvList();
                 break;
             case MSG_MESG:
-                QString s(MsgRcv->msgTxt);
+                s = QString(MsgRcv->msgTxt);
                 parentx->print_msg(s);
                 break;
         }

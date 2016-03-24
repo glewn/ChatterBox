@@ -18,20 +18,18 @@
 #include "Value.h"
 
 extern int sockNum;
-extern Clients list[MAXUSER];
+extern Clients list[MAXUSER];   //client list
 class clientSrc
 {
 public:
-    clientSrc(QWidget *parent = 0);
+    clientSrc(QWidget *parent = 0); //constructor
     void clientStart();
     void createMsg(MsgStr *mesgForm, int typeNum, const char *message);
     void sendPersonalInfo();
     void writeMsg(int type, std::string message);
-//    void recvList();
 
+    QWidget *parent;    //the parent class for client UI
 
-
-    QWidget *parent;
 };
 
 #endif // CLIENTSRC_H
