@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QResizeEvent>
 #include <QColorDialog>
+#include <QScrollBar>
 #include <sstream>
 #include <string>
 #include <time.h>
@@ -24,8 +25,8 @@ public:
     ~Client();
     void drawProfilePic();
     QString build_string(QString msg);
-    void displayChatMessage(std::string name, std::string message);
     void print_msg(QString msg);
+    void scroll_to_bottom();
 
 protected:
 
