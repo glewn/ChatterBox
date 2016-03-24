@@ -9,6 +9,8 @@
 #include <QColorDialog>
 #include <QFont>
 #include <QFontDialog>
+#include <QCloseEvent>
+#include <QMessageBox>
 #include <sstream>
 #include <string>
 #include "client.h"
@@ -31,7 +33,6 @@ extern QString imagePath;
 extern bool isPicSet;
 extern struct font usrFont;
 
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -42,6 +43,7 @@ public:
     void set_app_title(QString str);
     void set_style();
     void client_start();
+    void closeEvent (QCloseEvent *event);
 
 private slots:
 

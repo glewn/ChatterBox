@@ -117,11 +117,13 @@ void clientSrc::createMsg(MsgStr *mesgForm, int typeNum, const char *message)
     strcpy(mesgForm->msgTxt, message);
 }
 
-void clientSrc::writeMsg(std::string message)
+void clientSrc::writeMsg(int type, std::string message)
 {
     qDebug()<<"WRITE socket number : "<<sockNum<<"\n";
     MsgStr *msgPtr, msgTxt;
     msgPtr = &msgTxt;
-    createMsg(msgPtr, MSG_MESG, message.c_str());
+    createMsg(msgPtr, type, message.c_str());
     send(sockNum, (void *)msgPtr, sizeof(MsgStr), 0);
+    if(type == MSG_QUIT)
+        close(sockNum);
 }

@@ -27,6 +27,7 @@ public:
     QString build_string(QString msg);
     void print_msg(QString msg);
     void scroll_to_bottom();
+    void client_quit();
 
 protected:
 

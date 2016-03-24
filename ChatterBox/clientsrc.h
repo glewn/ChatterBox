@@ -26,7 +26,7 @@ public:
     void clientStart();
     void createMsg(MsgStr *mesgForm, int typeNum, const char *message);
     void sendPersonalInfo();
-    void writeMsg(std::string message);
+    void writeMsg(int type, std::string message);
     void recvList();
 
     Clients list[MAXUSER];
