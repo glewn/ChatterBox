@@ -12,7 +12,6 @@
 #include <sstream>
 #include <string>
 #include "client.h"
-#include "server.h"
 #include "connection.h"
 
 namespace Ui {
@@ -40,14 +39,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void set_status(QString str);
     void set_app_title(QString str);
     void set_style();
+    void client_start();
 
 private slots:
-    void on_actionClient_triggered();
-
-    void on_actionServer_triggered();
 
     void on_actionProfile_Pic_triggered();
 
@@ -62,7 +58,6 @@ private:
 
     // Pointer to the widgets
     Client *clnt;
-    Server *svr;
     QWidget *conn;
 };
 
