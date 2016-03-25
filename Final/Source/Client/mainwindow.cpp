@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     conn = new Connection(this);
     setCentralWidget(conn);
+
+    this->set_style();
 }
 
 /*------------------------------------------------------------------------------------------------------------------
@@ -136,7 +138,7 @@ void MainWindow::set_app_title(QString str)
 ----------------------------------------------------------------------------------------------------------------------*/
 void MainWindow::set_style()
 {
-    QFile File("style/test.qss");
+    QFile File("style/style.qss");
     File.open(QFile::ReadOnly);
     QString StyleSheet = QLatin1String(File.readAll());
 
